@@ -1,0 +1,66 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: consumption-pod
+  annotations:
+    displayName: "Consumption Pod"
+    description: "Pod that generates a consistent load profile every time it is run"
+    version: ""
+    iconClass: "fa fa-cog fa-spin"
+    tags: "6fusion, Meter"
+    template.openshift.io/provider-display-name: "6fusion, Inc."
+message: The Consumption Pod has been deployed to your project. It will run briefly, then sleep."
+objects:
+- apiVersion: v1
+  kind: ReplicationController
+  metadata:
+    name: consumption-pod
+    labels:
+      6fusion-app: consumption-pod
+  spec:
+    replicas: 1
+    selector:
+      6fusion-app: consumption-pod
+    template:
+      metadata:
+        name: consumption-pod
+        labels:
+          6fusion-app: consumption-pod
+      spec:
+        containers:
+        - name: consumption-pod
+          image: p80n/consumption-pod
+          env:
+          - name: CPU
+            value: ${cpu}
+          - name: MEMORY
+            value: ${meory}
+          - name: DISK
+            value: ${disk}
+          - name: WAN_RECEIVE
+            value: ${wan_receive}
+          - name: WAN_TRANSMIT
+            value: ${wan_transmit}
+
+parameters:
+# OpenShift
+- name: cpu
+  displayName: "CPU"
+  description: "Number of loop iterations to execute and keep a core busy"
+  value: "1000000"
+- name: memory
+  displayName: "Memory"
+  description: "Megabytes of memory to consume."
+  value: "50"
+- name: disk
+  displayName: "Disk I/O"
+  description: "Megabytes of data to write to a file on disk"
+  value: "100"
+- name: wan_receive
+  displayName: "Net receive"
+  description: "Megabytes of data to download from the internet. (Only 100mb is supported atm, other sizes are WIP)"
+  value: "100"
+- name: wan_receive
+  displayName: "Net transmit"
+  description: "Megabytes of data to upload to the internet.\n\n(we're using a free service for this - don't go crazy with this value)"
+  value: "10"
