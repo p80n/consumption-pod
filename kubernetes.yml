@@ -29,12 +29,13 @@ objects:
       spec:
         containers:
         - name: consumption-pod
-          image: p80n/consumption-pod
+          image: p80n/consumption-pod:0.1
+          imagePullPolicy: Always
           env:
           - name: CPU
             value: ${cpu}
           - name: MEMORY
-            value: ${meory}
+            value: ${memory}
           - name: DISK
             value: ${disk}
           - name: WAN_RECEIVE
@@ -60,7 +61,7 @@ parameters:
   displayName: "Net receive"
   description: "Megabytes of data to download from the internet. (Only 100mb is supported atm, other sizes are WIP)"
   value: "100"
-- name: wan_receive
+- name: wan_transmit
   displayName: "Net transmit"
   description: "Megabytes of data to upload to the internet.\n\n(we're using a free service for this - don't go crazy with this value)"
   value: "10"

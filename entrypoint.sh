@@ -27,6 +27,15 @@ memory(){
   log "Memory: load completed"
 }
 
+
+# file_url(){
+#   case $WAN_RECEIVE in
+#     100) all three;;
+#     10|1024) "http://speedtest.ftp.otenet.gr/files/test1Mb.db" ;;
+#     1) download="http://speedtest.ftp.otenet.gr/files/test1Mb.db";;
+#   esac
+# }
+
 wan_receive(){
   # case $WAN_RECEIVE in
   #   100) /bin/true;;
@@ -43,7 +52,7 @@ wan_transmit(){
 
 disk_write(){
   log "Disk write: writing $DISK_WRITE megabytes to disk"
-  dd if=/dev/urandom of=file bs=1MB count=$DISK_WRITE conv=fsync status=noxfer
+  dd if=/dev/urandom of=/tmp/file bs=1MB count=$DISK_WRITE conv=fsync status=noxfer
   log "Disk write: write completed"
 }
 
@@ -67,4 +76,7 @@ disk_write
 
 wait
 
-log "Load run completed"
+log "Load run completed. Sleeping forever."
+
+
+sleep 365d
